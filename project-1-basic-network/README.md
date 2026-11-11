@@ -100,11 +100,15 @@ View Documentation
 
 Repository Structure
 
-mikrotik-network-engineering-lab/
+## Repository Structure
+
+```text
+portofolio-saa/
 │
 ├── README.md
 │
-└── Network-Infrastructure/
+└── project-1-basic-network/
+    │
     ├── README.md
     │
     ├── Topology/
@@ -130,6 +134,7 @@ mikrotik-network-engineering-lab/
         ├── README.md
         ├── configuration.txt
         └── screenshots/
+```
 
 Testing & Verification
 
