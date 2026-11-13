@@ -64,3 +64,4 @@ Untuk memastikan sesi eBGP dari `Upstream` menuju kedua ISP sudah aktif, jalanka
 ```
 
 **Indikator Berhasil:** Status sesi untuk `upstream-eBGP-To-ISP-Primary` dan `upstream-eBGP-To-ISP-Backup` muncul dengan tanda **`E` (*Established*)** beserta tabel informasi *peer* lawan.
+![After Peering eBGP](after-koneksi-perring.png)
