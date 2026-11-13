@@ -5,7 +5,7 @@ A progressive, hands-on Border Gateway Protocol (BGP) lab series built on **PNET
 ---
 
 ## Master Topology
-![Master BGP Topology](assets/00-master-topology.png)
+![Master BGP Topology](bgp-basic-topology.png)
 
 ### Infrastructure & AS Design
 * **Enterprise Network (`AS 6500`):** Dual-homed architecture with two edge routers (`R-1 Edge`, `R-1 Edge-1`) and one core router (`R-1 Edge-2`), utilizing **OSPF** as an IGP underlay for Loopback-based **iBGP** peering.
