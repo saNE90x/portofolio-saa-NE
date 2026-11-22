@@ -1,0 +1,55 @@
+
+/ip address
+add address=15.1.1.2/30 interface=ether1 network=15.1.1.0
+add address=15.1.2.1/30 interface=ether2 network=15.1.2.0
+add address=14.14.14.2/30 interface=ether3 network=14.14.14.0
+add address=10.1.1.2 interface=lo network=10.1.1.2
+/ip dhcp-client
+add interface=ether1
+
+/routing ospf instance
+add disabled=no name=instance-v2 router-id=10.1.1.2
+/routing ospf area
+add disabled=no instance=instance-v2 name=backbone
+
+
+/routing ospf interface-template
+add area=backbone disabled=no interfaces=ether2 networks=15.1.2.0/30
+add area=backbone disabled=no interfaces=ether3 networks=14.14.14.0/30
+add area=backbone disabled=no interfaces=lo networks=10.1.1.2/32
+
+
+
+/ip firewall address-list
+add address=15.1.1.0/30 list=RR-2
+add address=15.1.2.0/30 list=RR-2
+add address=14.14.14.0/30 list=RR-2
+add address=10.1.1.2 list=RR-2
+add address=10.0.0.0/8 list=BOGON-PREFIX
+add address=172.16.0.0/12 list=BOGON-PREFIX
+add address=192.168.0.0/16 list=BOGON-PREFIX
+add address=127.0.0.0/8 list=BOGON-PREFIX
+add address=169.254.0.0/16 list=BOGON-PREFIX
+add address=103.10.10.0/24 list=AS6500-PUBLIC
+
+
+/routing bgp template
+add as=1200 name=RR-2 router-id=10.1.1.2
+
+/routing bgp connection
+add connect=yes input.filter=bgp-in-isp local.address=15.1.1.2 .role=ebgp name=RR-2-eBGP-To-ISP-B output.filter-chain=\
+bgp-out-isp .network=AS6500-PUBLIC remote.address=15.1.1.1 .as=200 templates=RR-2
+
+add connect=yes local.role=ibgp name=RR-2-To-RR-1 output.network=RR-2 remote.address=10.1.1.1 .as=1200 templates=RR-2
+
+add listen=yes local.role=ibgp-rr name=RR-2 nexthop-choice=force-self output.default-originate=always remote.address=\
+10.1.1.0/24 .as=1200 templates=RR-2
+
+/routing filter rule
+add chain=bgp-in-isp rule="if (bgp-as-path 1200) {reject } "
+add chain=bgp-in-isp rule="if (dst in BOGON-PREFIX ) { reject } "
+add chain=bgp-in-isp rule=accept
+add chain=bgp-out-isp rule="if (dst == 103.10.10.0/24 ) {accept }"
+add chain=bgp-out-isp rule=reject
+
+ 

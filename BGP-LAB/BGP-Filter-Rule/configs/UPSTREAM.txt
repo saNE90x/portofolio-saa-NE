@@ -1,0 +1,25 @@
+
+/system identity
+set name=Upstream
+
+
+/ip address
+add address=10.10.10.1/30 interface=ether2 network=10.10.10.0
+add address=15.15.15.1/30 interface=ether3 network=15.15.15.0
+
+/ip dhcp-client
+add interface=ether1
+
+
+/ip firewall address-list
+add address=10.10.10.0/30 list=upstream-list
+add address=15.15.15.0/30 list=upstream-list
+
+/routing bgp templates 
+add as=501 name=upstream router-id=1.1.1.1
+
+
+/routing bgp connection
+add local.role=ebgp name=upstream-To-eBGP-ISP-A output.default-originate=always .network=upstream-list remote.address=10.10.10.2 .as=100 templates=upstream
+add connect=yes local.role=ebgp name=upstream-To-eBGP-ISP-B output.default-originate=always .network=upstream-list remote.address=15.15.15.2 .as=200 templates=upstream
+

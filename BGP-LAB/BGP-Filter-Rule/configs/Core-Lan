@@ -1,0 +1,33 @@
+
+/system identity
+set name=Core-LAN
+
+/ip address
+add address=10.1.2.2/30 interface=ether1 network=10.1.2.0
+add address=17.1.1.2/30 interface=ether2 network=17.1.1.0
+add address=103.10.10.1/24 interface=ether3 network=103.10.10.0
+add address=10.1.1.5 interface=lo network=10.1.1.5
+/ip dhcp-client
+add interface=ether1
+
+/routing ospf instance
+add disabled=no name=backbone router-id=10.1.1.5
+/routing ospf area
+add disabled=no instance=backbone name=backbone
+
+/routing ospf interface-template
+add area=backbone disabled=no interfaces=ether1 networks=10.1.2.0/30
+add area=backbone disabled=no interfaces=ether2 networks=17.1.1.0/30
+add area=backbone disabled=no interfaces=ether3 networks=103.10.10.0/24
+add area=backbone disabled=no interfaces=lo networks=10.1.1.5/32
+
+
+
+/routing bgp template
+add as=1200 name=core-lan router-id=10.1.1.5
+
+/routing bgp connection
+add connect=yes local.role=ibgp-rr-client name=To-RR-1 remote.address=10.1.1.1 .as=1200 templates=core-lan
+add connect=yes local.role=ibgp-rr-client name=To-RR-2 remote.address=10.1.1.2 .as=1200 templates=core-lan
+
+
