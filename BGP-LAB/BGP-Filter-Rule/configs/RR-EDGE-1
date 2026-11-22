@@ -33,6 +33,14 @@ add address=192.168.0.0/16 list=BOGON-PREFIX
 add address=127.0.0.0/8 list=BOGON-PREFIX
 add address=169.254.0.0/16 list=BOGON-PREFIX
 add address=103.10.10.0/24 list=AS6500-PUBLIC
+#digunakan agar router luar tidak bisa mengadvertise ip yang sama dengan internal
+add list=AS1200-INTERNAL address=103.10.10.0/24 comment="Blok Publik Internal"
+add list=AS1200-INTERNAL address=10.1.1.0/24 comment="Loopback Internal AS1200"
+add list=AS1200-INTERNAL address=10.1.2.0/30 comment="PtP Core-1 - Core-LAN"
+add list=AS1200-INTERNAL address=11.1.2.0/30 comment="PtP RR-1 - Core-1"
+add list=AS1200-INTERNAL address=14.14.14.0/30 comment="PtP RR-1 - RR-2"
+add list=AS1200-INTERNAL address=15.1.2.0/30 comment="PtP RR-2 - Core-2"
+add list=AS1200-INTERNAL address=17.1.1.0/30 comment="PtP Core-2 - Core-LAN"
 
 /routing bgp template
 add as=1200 name=rr-1 router-id=10.1.1.1
@@ -49,6 +57,7 @@ add listen=yes local.role=ibgp-rr name=RR-Edge-1 nexthop-choice=force-self outpu
 /routing filter rule
 add chain=bgp-in-isp rule="if (bgp-as-path 1200) {reject}"
 add chain=bgp-in-isp rule="if (dst in BOGON-PREFIX ) {reject}"
+add chain=bgp-in-isp rule="if (dst in AS1200-INTERNAL) { reject }"
 add chain=bgp-in-isp rule=accept
 add chain=bgp-out-isp rule="if (dst == 103.10.10.0/24 ) {accept}"
 add chain=bgp-out-isp rule=reject
