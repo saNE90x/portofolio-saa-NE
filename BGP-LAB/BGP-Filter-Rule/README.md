@@ -7,7 +7,7 @@ Lab ini mengimplementasikan arsitektur **Multi-Homed BGP pada AS 1200** mengguna
 
 ## 2. Topology & Addressing Plan
 
-![Topology Diagram](./images/topology.png)
+![Topology Diagram](./topology/topology.png)
 
 | Device | Role / ASN | Interface | IP Address | Description |
 | :--- | :--- | :--- | :--- | :--- |
