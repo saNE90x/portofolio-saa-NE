@@ -52,7 +52,7 @@ Lab ini mengimplementasikan arsitektur **Multi-Homed BGP pada AS 1200** mengguna
 ## 4. Core Configuration
 
 File konfigurasi lengkap (`.rsc`) untuk masing-masing node tersedia pada direktori berikut:
-* 📂 [`configs/`](https://github.com/saNE90x/portofolio-saa-NE) *(sesuaikan dengan path folder repo config lo)*
+* 📂 [`configs/`](https://github.com/saNE90x/portofolio-saa-NE/BGP-LAB-BGP-Filter-Rule/configs) *(sesuaikan dengan path folder repo config lo)*
 
 <details>
 <summary><b>Klik untuk melihat cuplikan Routing Filter pada RR-Edge-1 & RR-Edge-2</b></summary>
